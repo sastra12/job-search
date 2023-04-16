@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { evenOrOdd } from '@/playground.js'
+import { evenOrOdd, multiply } from '@/playground.js'
 
 describe('basic math', () => {
   it('add two numbers', () => {
@@ -19,5 +19,11 @@ describe('evenOrOdd', () => {
     it('indicates the number is odd', () => {
       expect(evenOrOdd(3)).toBe('Odd')
     })
+  })
+})
+
+describe('multiply', () => {
+  it('multiples two numbers together', () => {
+    expect(multiply(2, 3)).toBe(6)
   })
 })
