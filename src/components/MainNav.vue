@@ -4,7 +4,21 @@
       <div
         class="mx-auto flex h-full flex-nowrap border-b border-solid border-brand-gray-1 px-8"
       >
-        <a href="/" class="flex h-full items-center text-xl">{{ company }}</a>
+        <a v-bind:href="url" class="flex h-full items-center text-xl">{{
+          company
+        }}</a>
+
+        <nav class="ml-12">
+          <ul class="flex h-full items-center">
+            <li
+              v-for="(menuItem, index) in menuItems"
+              :key="index"
+              class="mr-9 last:mr-0"
+            >
+              <a href="">{{ menuItem }}</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
@@ -16,6 +30,15 @@ export default {
   data() {
     return {
       company: "SAS Corporation",
+      url: "https://careers.google.com",
+      menuItems: [
+        "Teams",
+        "Location",
+        "Life at SAS Corp",
+        "How we hire",
+        "Students",
+        "Jobs",
+      ],
     };
   },
 };
