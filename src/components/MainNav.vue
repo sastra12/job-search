@@ -15,7 +15,7 @@ export default {
   name: "MainNav",
   data() {
     return {
-      company: "Bobo Careers",
+      company: "SAS Corporation",
     };
   },
 };
