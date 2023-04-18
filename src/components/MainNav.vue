@@ -20,7 +20,8 @@
           </ul>
         </nav>
         <div class="ml-auto flex items-center">
-          <ActionButton />
+          <ProfileImage v-if="isLoggedIn" />
+          <ActionButton v-else @click="loginUser" />
         </div>
       </div>
     </div>
@@ -29,10 +30,14 @@
 
 <script>
 import ActionButton from "@/components/ActionButton.vue";
+import ProfileImage from "@/components/ProfileImage.vue";
 
 export default {
+  // Whenever the data changes, view will render the template with the latest data values,
+  // the latest data properties.
+
   name: "MainNav",
-  components: { ActionButton },
+  components: { ActionButton, ProfileImage },
   data() {
     return {
       company: "SAS Corporation",
@@ -45,7 +50,14 @@ export default {
         "Students",
         "Jobs",
       ],
+      isLoggedIn: false,
     };
+  },
+
+  methods: {
+    loginUser() {
+      this.isLoggedIn = true;
+    },
   },
 };
 </script>
