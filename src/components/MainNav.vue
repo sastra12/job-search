@@ -21,7 +21,12 @@
         </nav>
         <div class="ml-auto flex items-center">
           <ProfileImage v-if="isLoggedIn" />
-          <ActionButton v-else @click="loginUser" text="Sign In" />
+          <ActionButton
+            v-else
+            @click="loginUser"
+            text="Sign In"
+            type="secondary"
+          />
         </div>
       </div>
     </div>
