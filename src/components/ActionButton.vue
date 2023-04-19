@@ -12,8 +12,8 @@ export default {
   computed: {
     buttonClass() {
       return {
-        primary: this.type === "primary",
-        secondary: this.type === "secondary",
+        // Dynamic Object
+        [this.type]: true, //{primary: true}
       };
     },
   },
