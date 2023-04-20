@@ -24,6 +24,8 @@
           <ActionButton v-else @click="loginUser" text="Sign In" />
         </div>
       </div>
+
+      <TheSubnav v-if="isLoggedIn" />
     </div>
   </header>
 </template>
@@ -31,13 +33,14 @@
 <script>
 import ActionButton from "@/components/ActionButton.vue";
 import ProfileImage from "@/components/ProfileImage.vue";
+import TheSubnav from "@/components/TheSubnav.vue";
 
 export default {
   // Whenever the data changes, view will render the template with the latest data values,
   // the latest data properties.
 
   name: "MainNav",
-  components: { ActionButton, ProfileImage },
+  components: { ActionButton, ProfileImage, TheSubnav },
   data() {
     return {
       company: "SAS Corporation",

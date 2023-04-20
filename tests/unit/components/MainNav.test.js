@@ -24,7 +24,13 @@ import userEvent from "@testing-library/user-event";
 
 describe("MainNav", () => {
   it("display company name", () => {
-    render(MainNav);
+    render(MainNav, {
+      global: {
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    });
     screen.getByText("SAS Corporation");
     const companyName = screen.getByText("SAS Corporation");
     expect(companyName).toBeInTheDocument();
@@ -34,7 +40,13 @@ describe("MainNav", () => {
   describe("when user logged in", () => {
     // tampilkan profile picture
     it("display user profile picture", async () => {
-      render(MainNav);
+      render(MainNav, {
+        global: {
+          stubs: {
+            FontAwesomeIcon: true,
+          },
+        },
+      });
       // getByRole adalah salah satu metode yang tersedia di Vue Testing Library yang
       // digunakan untuk mencari elemen berdasarkan peran atau fungsi yang diemulasikan dalam komponen Vue.
 
