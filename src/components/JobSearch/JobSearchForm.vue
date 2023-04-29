@@ -8,11 +8,7 @@
     <div class="flex h-full flex-1 flex-nowrap text-base font-light">
       <div class="relative flex h-full flex-1 items-center pr-3">
         <label for="" class="absolute -top-8 left-0">Role</label>
-        <TextInput
-          placeholder="Software Engineer"
-          @handleInput="updateRole"
-          :value="role"
-        />
+        <TextInput placeholder="Software Engineer" v-model="role" />
       </div>
 
       <span
@@ -22,11 +18,7 @@
 
       <div class="relative flex h-full flex-1 items-center pl-3">
         <label for="" class="absolute -top-8 left-0">Where?</label>
-        <TextInput
-          placeholder="Los Angeles"
-          @handleInput="updateLocation"
-          :value="location"
-        />
+        <TextInput placeholder="Los Angeles" v-model="location" />
       </div>
 
       <action-button text="Search" type="secondary" class="rounded-r-2xl" />
