@@ -39,13 +39,5 @@ export default {
       location: "",
     };
   },
-  methods: {
-    updateRole(value) {
-      this.role = value;
-    },
-    updateLocation(value) {
-      this.location = value;
-    },
-  },
 };
 </script>
