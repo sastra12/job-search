@@ -10,17 +10,15 @@
 <script>
 export default {
   name: "TextInput",
-  data() {
-    return {
-      value: "",
-    };
+  props: {
+    value: {
+      type: String,
+      required: true,
+    },
   },
-
   methods: {
     handleInput($event) {
-      this.value = $event.target.value;
-      // console.log(this.value);
-      this.$emit("handleInput", this.value);
+      this.$emit("handleInput", $event.target.value);
     },
   },
 };
