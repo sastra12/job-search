@@ -19,6 +19,8 @@ export default {
   methods: {
     handleInput($event) {
       this.value = $event.target.value;
+      // console.log(this.value);
+      this.$emit("handleInput", this.value);
     },
   },
 };
