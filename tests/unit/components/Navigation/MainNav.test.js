@@ -24,32 +24,50 @@ import MainNav from "@/components/Navigation/MainNav.vue";
 // komponen Vue berperilaku sesuai dengan yang diharapkan
 
 describe("MainNav", () => {
-  it("display company name", () => {
+  const renderMainNav = () => {
+    const $route = {
+      name: "Home",
+    };
     render(MainNav, {
       global: {
+        mocks: {
+          $route,
+        },
         stubs: {
           FontAwesomeIcon: true,
           RouterLink: RouterLinkStub,
         },
       },
     });
-    screen.getByText("SAS Corporation");
+  };
+
+  it("display company name", () => {
+    renderMainNav();
     const companyName = screen.getByText("SAS Corporation");
     expect(companyName).toBeInTheDocument();
+  });
+
+  it("displays menu items for navigation", () => {
+    renderMainNav();
+    const navigationMenuItems = screen.getAllByRole("listitem");
+    const navigationMenuTexts = navigationMenuItems.map(
+      (item) => item.textContent
+    );
+    expect(navigationMenuTexts).toEqual([
+      "Teams",
+      "Location",
+      "Life at SAS Corp",
+      "How we hire",
+      "Students",
+      "Jobs",
+    ]);
   });
 
   // ketika user login apa yang kita lakukan?
   describe("when user logged in", () => {
     // tampilkan profile picture
     it("display user profile picture", async () => {
-      render(MainNav, {
-        global: {
-          stubs: {
-            FontAwesomeIcon: true,
-            RouterLink: RouterLinkStub,
-          },
-        },
-      });
+      renderMainNav();
       // getByRole adalah salah satu metode yang tersedia di Vue Testing Library yang
       // digunakan untuk mencari elemen berdasarkan peran atau fungsi yang diemulasikan dalam komponen Vue.
 
