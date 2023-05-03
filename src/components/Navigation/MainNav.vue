@@ -4,9 +4,11 @@
       <div
         class="mx-auto flex h-full flex-nowrap border-b border-solid border-brand-gray-1 px-8"
       >
-        <a v-bind:href="url" class="flex h-full items-center text-xl">{{
-          company
-        }}</a>
+        <router-link
+          :to="{ name: 'Home' }"
+          class="flex h-full items-center text-xl"
+          >SAS Corporation</router-link
+        >
 
         <nav class="ml-12">
           <ul class="flex h-full items-center">
@@ -15,7 +17,7 @@
               :key="index"
               class="mr-9 last:mr-0"
             >
-              <a href="">{{ menuItem }}</a>
+              <router-link :to="menuItem.url">{{ menuItem.text }}</router-link>
             </li>
           </ul>
         </nav>
@@ -43,15 +45,13 @@ export default {
   components: { ActionButton, ProfileImage, TheSubnav },
   data() {
     return {
-      company: "SAS Corporation",
-      url: "https://careers.google.com",
       menuItems: [
-        "Teams",
-        "Location",
-        "Life at SAS Corp",
-        "How we hire",
-        "Students",
-        "Jobs",
+        { text: "Teams", url: "/" },
+        { text: "Location", url: "/" },
+        { text: "Life at SAS Corp", url: "/" },
+        { text: "How we hire", url: "/" },
+        { text: "Students", url: "/" },
+        { text: "Jobs", url: "/job/results" },
       ],
       isLoggedIn: false,
     };
