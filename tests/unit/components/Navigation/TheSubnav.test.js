@@ -5,16 +5,17 @@ import TheSubnav from "@/components/Navigation/TheSubnav.vue";
 describe("TheSubnav", () => {
   describe("when user is on jobs page", () => {
     it("display jobs count", () => {
+      const $route = {
+        name: "JobResults",
+      };
       render(TheSubnav, {
         global: {
+          mocks: {
+            $route,
+          },
           stubs: {
             FontAwesomeIcon: true,
           },
-        },
-        data() {
-          return {
-            onJobResultsPage: true,
-          };
         },
       });
 
@@ -25,16 +26,17 @@ describe("TheSubnav", () => {
   });
   describe("when user is not on jobs page", () => {
     it("does not display jobs cunt", () => {
+      const $route = {
+        name: "Home",
+      };
       render(TheSubnav, {
         global: {
+          mocks: {
+            $route,
+          },
           stubs: {
             FontAwesomeIcon: true,
           },
-        },
-        data() {
-          return {
-            onJobResultsPage: false,
-          };
         },
       });
 
