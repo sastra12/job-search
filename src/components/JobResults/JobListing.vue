@@ -21,6 +21,31 @@
               </div>
             </div>
           </div>
+
+          <div class="px-8 py-4">
+            <div>
+              <h3>Qualifications:</h3>
+              <div>
+                <ul class="list-disc pl-8">
+                  <li>Bachelor’s degree or equivalent practical experience.</li>
+                  <li>
+                    2 years of experience with software development in one or
+                    more programming languages, or 1 year of experience with an
+                    advanced degree.
+                  </li>
+                  <li>
+                    Experience driving product direction, go-to-market strategy,
+                    and design with data-driven decisions.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-2 text-center">
+              <router-link class="text-brand-blue-1" to="/job/results/1"
+                >Expand</router-link
+              >
+            </div>
+          </div>
         </router-link>
       </li>
     </ol>
