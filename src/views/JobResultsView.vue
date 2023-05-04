@@ -1,15 +1,15 @@
 <template>
   <div class="flex w-full flex-nowrap">
     <JobFilterSidebar />
-    <JobListing />
+    <JobListings />
   </div>
 </template>
 
 <script>
 import JobFilterSidebar from "@/components/JobResults/JobFilterSidebar/JobFilterSidebar.vue";
-import JobListing from "@/components/JobResults/JobListing.vue";
+import JobListings from "@/components/JobResults/JobListings.vue";
 export default {
   name: "JobResultsView",
-  components: { JobFilterSidebar, JobListing },
+  components: { JobFilterSidebar, JobListings },
 };
 </script>
