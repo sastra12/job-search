@@ -1,18 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-import HomeView from "@/views/HomeView.vue";
-
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: HomeView,
+    component: () => import("@/views/HomeView.vue"),
   },
-  // Card Menu
+
   {
     path: "/job/results",
     name: "JobResults",
     component: () => import("@/views/JobResultsView.vue"),
+  },
+
+  {
+    path: "/job/results/:id",
+    name: "JobListing",
+    component: () => import("@/views/JobView.vue"),
   },
 ];
 
