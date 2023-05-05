@@ -6,16 +6,24 @@
     >
       <div class="mx-8 border-b border-solid border-brand-gray-2 pb-2 pt-5">
         <h2 class="mb-2 text-2xl">
-          Technical Progam Manager, Perception, Augmented Reality
+          {{ job.title }}
         </h2>
 
         <div class="flex align-middle">
           <div class="mr-4">
-            <span>GOJEK</span>
+            <span>{{ job.organization }}</span>
           </div>
 
           <div>
-            <span>Jakarta, Indonesia</span>
+            <ul>
+              <li
+                v-for="location in job.locations"
+                :key="location"
+                class="mr-4 inline-block"
+              >
+                {{ location }}
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -25,15 +33,11 @@
           <h3>Qualifications:</h3>
           <div>
             <ul class="list-disc pl-8">
-              <li>Bachelor’s degree or equivalent practical experience.</li>
-              <li>
-                2 years of experience with software development in one or more
-                programming languages, or 1 year of experience with an advanced
-                degree.
-              </li>
-              <li>
-                Experience driving product direction, go-to-market strategy, and
-                design with data-driven decisions.
+              <li
+                v-for="qualification in job.minimumQualifications"
+                :key="qualification"
+              >
+                {{ qualification }}
               </li>
             </ul>
           </div>
