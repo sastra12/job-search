@@ -36,4 +36,20 @@ describe("JobListing", () => {
     renderJobListing(jobProps);
     expect(screen.getByText("PT. ALI BABA")).toBeInTheDocument();
   });
+
+  it("render job locations", () => {
+    const jobProps = createJobProps({ locations: ["Banyuwangi", "Jember"] });
+    renderJobListing(jobProps);
+    expect(screen.getByText("Banyuwangi")).toBeInTheDocument();
+    expect(screen.getByText("Jember")).toBeInTheDocument();
+  });
+
+  it("render job qualifications", () => {
+    const jobProps = createJobProps({
+      minimumQualifications: ["Code", "Develop"],
+    });
+    renderJobListing(jobProps);
+    expect(screen.getByText("Code")).toBeInTheDocument();
+    expect(screen.getByText("Develop")).toBeInTheDocument();
+  });
 });
