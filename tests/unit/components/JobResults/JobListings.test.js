@@ -20,6 +20,9 @@ describe("JobListings", () => {
         mocks: {
           $route,
         },
+        stubs: {
+          RouterLink: RouterLinkStub,
+        },
       },
     });
   };
@@ -37,5 +40,55 @@ describe("JobListings", () => {
     renderjobListings($route);
     const jobListings = await screen.findAllByRole("listitem");
     expect(jobListings).toHaveLength(10);
+  });
+
+  describe("when params exclude page number", () => {
+    it("display page number", () => {
+      const queryParams = { page: undefined };
+      const $route = createRoute(queryParams);
+
+      renderjobListings($route);
+
+      expect(screen.getByText("Page 1")).toBeInTheDocument();
+    });
+  });
+
+  describe("when params include page number", () => {
+    it("display page number", () => {
+      const queryParams = { page: "3" };
+      const $route = createRoute(queryParams);
+      renderjobListings($route);
+
+      expect(screen.getByText("Page 3")).toBeInTheDocument();
+    });
+  });
+
+  describe("when user on first page", () => {
+    it("it do not showing previous page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "1" };
+      const $route = createRoute(queryParams);
+
+      renderjobListings($route);
+      await screen.findAllByRole("listitem");
+      const previousLink = screen.queryByRole("link", {
+        name: /previous/i,
+      });
+
+      expect(previousLink).not.toBeInTheDocument();
+    });
+
+    it("show link to next page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "1" };
+      const $route = createRoute(queryParams);
+
+      renderjobListings($route);
+      await screen.findAllByRole("listitem");
+      const nextLink = screen.queryByRole("link", {
+        name: /next/i,
+      });
+      expect(nextLink).toBeInTheDocument();
+    });
   });
 });
