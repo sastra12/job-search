@@ -1,7 +1,7 @@
 <template>
   <main class="flex-auto bg-brand-gray-2 p-8">
     <ol>
-      <JobListing v-for="job in jobs" :key="job.id" :job="job" />
+      <JobListing v-for="job in displayJobs" :key="job.id" :job="job" />
     </ol>
   </main>
 </template>
@@ -18,19 +18,19 @@ export default {
     };
   },
 
-  methods: {
-    async getListJobs() {
-      try {
-        const response = await axios.get(" http://localhost:3000/jobs");
-        this.jobs = response.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
+  async mounted() {
+    const response = await axios.get("http://localhost:3000/jobs");
+    this.jobs = response.data;
   },
 
-  mounted() {
-    this.getListJobs();
+  computed: {
+    displayJobs() {
+      const pageString = this.$route.query.page; // '1'
+      const pageNumber = Number.parseInt(pageString);
+      const firstJobIndex = (pageNumber - 1) * 10;
+      const lastJobIndex = pageNumber * 10;
+      return this.jobs.slice(firstJobIndex, lastJobIndex);
+    },
   },
 };
 </script>
