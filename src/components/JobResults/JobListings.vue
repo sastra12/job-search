@@ -11,6 +11,7 @@
         <div class="flex items-center justify-center">
           <router-link
             v-if="previousPage"
+            role="link"
             :to="{ name: 'JobResults', query: { page: previousPage } }"
             class="mr-4 font-semibold text-brand-blue-2"
             >Previous</router-link
@@ -41,7 +42,8 @@ export default {
   },
 
   async mounted() {
-    const response = await axios.get("http://localhost:3000/jobs");
+    const baseUrl = import.meta.env.VITE_APP_API_URL;
+    const response = await axios.get(`${baseUrl}/jobs`);
     this.jobs = response.data;
   },
 
