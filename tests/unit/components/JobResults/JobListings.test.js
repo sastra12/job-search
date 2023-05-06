@@ -91,4 +91,18 @@ describe("JobListings", () => {
       expect(nextLink).toBeInTheDocument();
     });
   });
+
+  describe("when user on last page", () => {
+    it("does not showing next page", async () => {
+      axios.get.mockResolvedValue({ data: Array(15).fill({}) });
+      const queryParams = { page: "2" };
+      const $route = createRoute(queryParams);
+      renderjobListings($route);
+      await screen.findAllByRole("listitem");
+      const nextLink = screen.queryByRole("link", {
+        name: /next/i,
+      });
+      expect(nextLink).not.toBeInTheDocument();
+    });
+  });
 });
