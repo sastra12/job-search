@@ -3,6 +3,27 @@
     <ol>
       <JobListing v-for="job in displayJobs" :key="job.id" :job="job" />
     </ol>
+
+    <div class="mx-auto mt-8">
+      <div class="flex flex-row flex-nowrap">
+        <p class="flex-grow text-sm">Page {{ currentPage }}</p>
+
+        <div class="flex items-center justify-center">
+          <router-link
+            v-if="previousPage"
+            :to="{ name: 'JobResults', query: { page: previousPage } }"
+            class="mr-4 font-semibold text-brand-blue-2"
+            >Previous</router-link
+          >
+          <router-link
+            v-if="nextPage"
+            :to="{ name: 'JobResults', query: { page: nextPage } }"
+            class="mr-4 font-semibold text-brand-blue-2"
+            >Next</router-link
+          >
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -24,9 +45,22 @@ export default {
   },
 
   computed: {
+    currentPage() {
+      return Number.parseInt(this.$route.query.page || "1");
+    },
+    previousPage() {
+      const previousPage = this.currentPage - 1;
+      const firstPage = 1;
+      return previousPage >= firstPage ? previousPage : undefined;
+    },
+    nextPage() {
+      const nextPage = this.currentPage + 1;
+      const maxPage = this.jobs.length / 10;
+      return nextPage <= maxPage ? nextPage : undefined;
+    },
     displayJobs() {
-      const pageString = this.$route.query.page || "1";
-      const pageNumber = Number.parseInt(pageString);
+      // ketika ada perubahan di current page maka akan otomatis menjalankan displayjobs
+      const pageNumber = this.currentPage;
       const firstJobIndex = (pageNumber - 1) * 10;
       const lastJobIndex = pageNumber * 10;
       return this.jobs.slice(firstJobIndex, lastJobIndex);
