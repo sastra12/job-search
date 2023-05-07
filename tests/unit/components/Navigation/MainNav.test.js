@@ -5,6 +5,7 @@ import { RouterLinkStub } from "@vue/test-utils";
 import userEvent from "@testing-library/user-event";
 import MainNav from "@/components/Navigation/MainNav.vue";
 import { createTestingPinia } from "@pinia/testing";
+import { useUserStore } from "@/stores/user";
 
 // Fungsi render dari Vue Testing Library adalah fungsi yang digunakan untuk merender sebuah komponen Vue ke dalam virtual DOM
 // Fungsi screen.debug() pada library test Vue digunakan untuk menampilkan output atau informasi tambahan tentang komponen Vue yang sedang diuji
@@ -26,7 +27,7 @@ import { createTestingPinia } from "@pinia/testing";
 
 describe("MainNav", () => {
   const renderMainNav = () => {
-    const pinia = createTestingPinia({ stubActions: false });
+    const pinia = createTestingPinia();
     const $route = {
       name: "Home",
     };
@@ -71,6 +72,7 @@ describe("MainNav", () => {
     // tampilkan profile picture
     it("display user profile picture", async () => {
       renderMainNav();
+      const userStore = useUserStore();
       // getByRole adalah salah satu metode yang tersedia di Vue Testing Library yang
       // digunakan untuk mencari elemen berdasarkan peran atau fungsi yang diemulasikan dalam komponen Vue.
 
@@ -85,7 +87,7 @@ describe("MainNav", () => {
       const loginButton = screen.getByRole("button", {
         name: /sign in/i,
       });
-
+      userStore.isLoggedIn = true;
       // click pada user event ini me return promise
       await userEvent.click(loginButton);
       profileimage = screen.queryByRole("img", {
