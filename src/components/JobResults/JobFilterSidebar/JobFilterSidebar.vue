@@ -10,6 +10,8 @@
         </div>
       </div>
 
+      <collapsible-accordion header="Degree" />
+
       <collapsible-accordion header="Job types">
         <p>Place Holder for now</p>
       </collapsible-accordion>
