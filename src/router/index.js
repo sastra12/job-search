@@ -18,6 +18,11 @@ const routes = [
     name: "JobListing",
     component: () => import("@/views/JobView.vue"),
   },
+  {
+    path: "/teams",
+    name: "Teams",
+    component: () => import("@/views/TeamsView.vue"),
+  },
 ];
 
 const router = createRouter({
