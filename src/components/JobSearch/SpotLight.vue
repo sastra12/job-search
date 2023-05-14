@@ -16,10 +16,10 @@ export default {
     };
   },
 
-  mounted() {
+  async mounted() {
     const baseUrl = import.meta.env.VITE_APP_API_URL;
     const url = `${baseUrl}/spotlights`;
-    const response = axios.get(url);
+    const response = await axios.get(url);
     this.spotlights = response.data;
   },
 };
