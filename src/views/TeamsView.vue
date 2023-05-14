@@ -1,9 +1,9 @@
 <template>
   <header-container>
-    <template v-slot:title>
+    <template #title>
       <h1 class="w-full text-4xl font-normal">Teams</h1>
     </template>
-    <template v-slot:subtitle>
+    <template #subtitle>
       <h2 class="my-4 w-full text-base">
         It's awesome working here. Why don't you come join us?
       </h2>
