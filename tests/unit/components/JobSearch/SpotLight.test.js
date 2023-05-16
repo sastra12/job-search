@@ -6,7 +6,7 @@ import SpotLight from "@/components/JobSearch/SpotLight.vue";
 vi.mock("axios");
 
 describe("SpotLight", () => {
-  it("provide image to parent component", async () => {
+  const mockSpotLightResponse = (spotlight = {}) => {
     axios.get.mockResolvedValue({
       data: [
         {
@@ -14,9 +14,15 @@ describe("SpotLight", () => {
           img: "Some image",
           title: "Some title",
           description: "Some description",
+          ...spotlight,
         },
       ],
     });
+  };
+
+  it("provide image to parent component", async () => {
+    const spotlight = { img: "Other image" };
+    mockSpotLightResponse(spotlight);
 
     render(SpotLight, {
       slots: {
@@ -27,21 +33,13 @@ describe("SpotLight", () => {
       },
     });
 
-    const text = await screen.findByText("Some image");
+    const text = await screen.findByText("Other image");
     expect(text).toBeInTheDocument();
   });
 
   it("provide title to parent component", async () => {
-    axios.get.mockResolvedValue({
-      data: [
-        {
-          id: 1,
-          img: "Some image",
-          title: "Some title",
-          description: "Some description",
-        },
-      ],
-    });
+    const spotlight = { title: "Other title" };
+    mockSpotLightResponse(spotlight);
 
     render(SpotLight, {
       slots: {
@@ -52,21 +50,13 @@ describe("SpotLight", () => {
       },
     });
 
-    const text = await screen.findByText("Some title");
+    const text = await screen.findByText("Other title");
     expect(text).toBeInTheDocument();
   });
 
   it("provide description to parent component", async () => {
-    axios.get.mockResolvedValue({
-      data: [
-        {
-          id: 1,
-          img: "Some image",
-          title: "Some title",
-          description: "Some description",
-        },
-      ],
-    });
+    const spotlight = { description: "Other description" };
+    mockSpotLightResponse(spotlight);
 
     render(SpotLight, {
       slots: {
@@ -77,7 +67,7 @@ describe("SpotLight", () => {
       },
     });
 
-    const text = await screen.findByText("Some description");
+    const text = await screen.findByText("Other description");
     expect(text).toBeInTheDocument();
   });
 });
