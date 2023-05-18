@@ -8,7 +8,14 @@
             v-for="organization in UNIQUE_ORGANIZATIONS"
             :key="organization"
           >
-            <input :id="organization" type="checkbox" class="mr-3" />
+            <input
+              :id="organization"
+              v-model="selectedOrganizations"
+              :value="organization"
+              @change="selectOrganization"
+              type="checkbox"
+              class="mr-3"
+            />
             <label :for="organization">{{ organization }}</label>
           </li>
         </ul>
@@ -25,8 +32,19 @@ import { useJobsStore, UNIQUE_ORGANIZATIONS } from "@/stores/jobs";
 export default {
   name: "JobFilterSidebarOrganizations",
   components: { CollapsibleAccordion },
+  data() {
+    return {
+      selectedOrganizations: [],
+    };
+  },
   computed: {
     ...mapState(useJobsStore, [UNIQUE_ORGANIZATIONS]),
+  },
+
+  methods: {
+    selectOrganization() {
+      console.log(this.selectedOrganizations);
+    },
   },
 };
 </script>
