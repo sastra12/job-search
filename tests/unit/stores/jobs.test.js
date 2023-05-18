@@ -1,6 +1,8 @@
 import { createPinia, setActivePinia } from "pinia";
 import axios from "axios";
 import { useJobsStore } from "@/stores/jobs";
+import { describe } from "vitest";
+import { useUserStore } from "@/stores/user";
 
 vi.mock("axios");
 
@@ -45,6 +47,26 @@ describe("getter", () => {
       ];
       const result = store.UNIQUE_ORGANIZATIONS;
       expect(result).toEqual(new Set(["Google", "Amazon"]));
+    });
+  });
+
+  describe("FILTERED_JOBS_BY_ORGANIZATIONS", () => {
+    it("identifies jobs that are associated with the given organizations", () => {
+      const jobsStore = useJobsStore();
+      jobsStore.jobs = [
+        { organization: "Google" },
+        { organization: "Amazon" },
+        { organization: "Microsoft" },
+      ];
+
+      const userStore = useUserStore();
+      userStore.selectOrganizations = ["Google", "Amazon"];
+
+      const result = jobsStore.FILTERED_JOBS_BY_ORGANIZATIONS;
+      expect(result).toEqual([
+        { organization: "Google" },
+        { organization: "Amazon" },
+      ]);
     });
   });
 });
