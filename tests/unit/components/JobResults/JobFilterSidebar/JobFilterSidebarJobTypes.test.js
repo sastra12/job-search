@@ -2,15 +2,16 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
 
-import JobFilterSidebarOrganizations from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarOrganizations.vue";
+import JobFilterSidebarJobTypes from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarJobTypes.vue";
 import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
 
-describe("JobFilterSidebarOrganizations", () => {
-  const renderJobFilterSidebarOrganizations = () => {
+describe("JobFilterSidebarJobTypes", () => {
+  it("renders unique list of job types from jobs", async () => {
     const pinia = createTestingPinia();
     const jobStore = useJobsStore();
-    const userStore = useUserStore();
+    jobStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
+
     render(JobFilterSidebarOrganizations, {
       global: {
         plugins: [pinia],
@@ -19,27 +20,6 @@ describe("JobFilterSidebarOrganizations", () => {
         },
       },
     });
-
-    return { jobStore, userStore };
-  };
-
-  it("renders unique list of organizations from jobs", async () => {
-    // destructuring
-    const { jobStore } = renderJobFilterSidebarOrganizations();
-
-    // yang lama
-    // const pinia = createTestingPinia();
-    // const jobStore = useJobsStore();
-    jobStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
-    // yang lama
-    // render(JobFilterSidebarOrganizations, {
-    //   global: {
-    //     plugins: [pinia],
-    //     stubs: {
-    //       FontAwesomeIcon: true,
-    //     },
-    //   },
-    // });
     const button = screen.getByRole("button", { name: /organizations/i });
     await userEvent.click(button);
 
@@ -49,22 +29,19 @@ describe("JobFilterSidebarOrganizations", () => {
   });
 
   it("communicates that user has selected checkbox for organizations", async () => {
-    const { jobStore, userStore } = renderJobFilterSidebarOrganizations();
-    // yang lama
-    // const pinia = createTestingPinia();
-    // const userStore = useUserStore();
-    // const jobStore = useJobsStore();
+    const pinia = createTestingPinia();
+    const userStore = useUserStore();
+    const jobStore = useJobsStore();
     jobStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
 
-    // yang lama
-    // render(JobFilterSidebarOrganizations, {
-    //   global: {
-    //     plugins: [pinia],
-    //     stubs: {
-    //       FontAwesomeIcon: true,
-    //     },
-    //   },
-    // });
+    render(JobFilterSidebarOrganizations, {
+      global: {
+        plugins: [pinia],
+        stubs: {
+          FontAwesomeIcon: true,
+        },
+      },
+    });
     const button = screen.getByRole("button", { name: /organizations/i });
     await userEvent.click(button);
 
