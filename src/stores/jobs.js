@@ -4,6 +4,7 @@ import { useUserStore } from "@/stores/user";
 
 export const FETCH_JOBS = "FETCH_JOBS";
 export const UNIQUE_ORGANIZATIONS = "UNIQUE_ORGANIZATIONS";
+export const UNIQUE_JOB_TYPES = "UNIQUE_JOB_TYPES";
 export const FILTERED_JOBS_BY_ORGANIZATIONS = "FILTERED_JOBS_BY_ORGANIZATIONS";
 
 export const useJobsStore = defineStore("jobs", {
@@ -30,6 +31,15 @@ export const useJobsStore = defineStore("jobs", {
       });
       return uniqueOrganizations;
     },
+
+    [UNIQUE_JOB_TYPES](state) {
+      const uniquejobTypes = new Set();
+      state.jobs.forEach(function (job) {
+        uniquejobTypes.add(job.jobType);
+      });
+      return uniquejobTypes;
+    },
+
     [FILTERED_JOBS_BY_ORGANIZATIONS](state) {
       const userStore = useUserStore();
       if (userStore.selectOrganizations.length === 0) {
