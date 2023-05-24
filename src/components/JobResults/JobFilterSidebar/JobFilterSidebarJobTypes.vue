@@ -31,7 +31,7 @@ import { useJobsStore, UNIQUE_JOB_TYPES } from "@/stores/jobs";
 import { useUserStore, ADD_SELECTED_JOB_TYPES } from "@/stores/user";
 
 export default {
-  name: "JobFilterSidebarOrganizations",
+  name: "JobFilterSidebarJobTypes",
   components: { CollapsibleAccordion },
   data() {
     return {
