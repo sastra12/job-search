@@ -7,12 +7,11 @@ import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
 
 describe("JobFilterSidebarJobTypes", () => {
-  it("renders unique list of job types from jobs", async () => {
+  const renderJobFilterSidebarJobTypes = () => {
     const pinia = createTestingPinia();
     const jobStore = useJobsStore();
-    jobStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
-
-    render(JobFilterSidebarOrganizations, {
+    const userStore = useUserStore();
+    render(JobFilterSidebarJobTypes, {
       global: {
         plugins: [pinia],
         stubs: {
@@ -20,39 +19,63 @@ describe("JobFilterSidebarJobTypes", () => {
         },
       },
     });
-    const button = screen.getByRole("button", { name: /organizations/i });
+
+    return { jobStore, userStore };
+  };
+
+  it("renders unique list of job types from jobs", async () => {
+    // destructuring
+    const { jobStore } = renderJobFilterSidebarJobTypes();
+
+    // yang lama
+    // const pinia = createTestingPinia();
+    // const jobStore = useJobsStore();
+    jobStore.UNIQUE_JOB_TYPES = new Set(["Full-time", "Part-time"]);
+    // yang lama
+    // render(JobFilterSidebarOrganizations, {
+    //   global: {
+    //     plugins: [pinia],
+    //     stubs: {
+    //       FontAwesomeIcon: true,
+    //     },
+    //   },
+    // });
+    const button = screen.getByRole("button", { name: /job types/i });
     await userEvent.click(button);
 
-    const organizationListItem = screen.getAllByRole("listitem");
-    const organizations = organizationListItem.map((node) => node.textContent);
-    expect(organizations).toEqual(["Google", "Amazon"]);
+    const JobTypesListItem = screen.getAllByRole("listitem");
+    const JobTypes = JobTypesListItem.map((node) => node.textContent);
+    expect(JobTypes).toEqual(["Full-time", "Part-time"]);
   });
 
-  it("communicates that user has selected checkbox for organizations", async () => {
-    const pinia = createTestingPinia();
-    const userStore = useUserStore();
-    const jobStore = useJobsStore();
-    jobStore.UNIQUE_ORGANIZATIONS = new Set(["Google", "Amazon"]);
+  it("communicates that user has selected checkbox for job types", async () => {
+    const { jobStore, userStore } = renderJobFilterSidebarJobTypes();
+    // yang lama
+    // const pinia = createTestingPinia();
+    // const userStore = useUserStore();
+    // const jobStore = useJobsStore();
+    jobStore.UNIQUE_JOB_TYPES = new Set(["Full-time", "Part-time"]);
 
-    render(JobFilterSidebarOrganizations, {
-      global: {
-        plugins: [pinia],
-        stubs: {
-          FontAwesomeIcon: true,
-        },
-      },
-    });
-    const button = screen.getByRole("button", { name: /organizations/i });
+    // yang lama
+    // render(JobFilterSidebarOrganizations, {
+    //   global: {
+    //     plugins: [pinia],
+    //     stubs: {
+    //       FontAwesomeIcon: true,
+    //     },
+    //   },
+    // });
+    const button = screen.getByRole("button", { name: /job types/i });
     await userEvent.click(button);
 
-    const googleCheckbox = screen.getByRole("checkbox", {
-      name: /google/i,
+    const fullTimeCheckbox = screen.getByRole("checkbox", {
+      name: /full-time/i,
     });
 
-    await userEvent.click(googleCheckbox);
+    await userEvent.click(fullTimeCheckbox);
 
-    expect(userStore.ADD_SELECTED_ORGANIZATIONS).toHaveBeenCalledWith([
-      "Google",
+    expect(userStore.ADD_SELECTED_JOB_TYPES).toHaveBeenCalledWith([
+      "Full-time",
     ]);
   });
 });
