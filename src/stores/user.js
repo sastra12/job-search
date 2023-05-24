@@ -1,12 +1,15 @@
 import { defineStore } from "pinia";
 
 export const ADD_SELECTED_ORGANIZATIONS = "ADD_SELECTED_ORGANIZATIONS";
+export const ADD_SELECTED_JOB_TYPES = "ADD_SELECTED_JOB_TYPES";
+
 export const useUserStore = defineStore("user", {
   // data
   state: () => {
     return {
       isLoggedIn: false,
       selectOrganizations: [],
+      selectedJobTypes: [],
     };
   },
 
@@ -18,6 +21,10 @@ export const useUserStore = defineStore("user", {
 
     [ADD_SELECTED_ORGANIZATIONS](organizations) {
       this.selectOrganizations = organizations;
+    },
+
+    [ADD_SELECTED_JOB_TYPES](jobTypes) {
+      this.selectedJobTypes = jobTypes;
     },
   },
 });
