@@ -36,6 +36,7 @@ import {
   FETCH_JOBS,
   FILTERED_JOBS_BY_ORGANIZATIONS,
   FILTERED_JOBS_BY_JOB_TYPES,
+  FILTERED_JOBS,
 } from "@/stores/jobs";
 import JobListing from "@/components/JobResults/JobListing.vue";
 
@@ -54,12 +55,14 @@ export default {
     },
     ...mapState(useJobsStore, {
       // FILTERED_JOBS_BY_ORGANIZATIONS,
-      FILTERED_JOBS_BY_JOB_TYPES,
+      // FILTERED_JOBS_BY_JOB_TYPES,
+      FILTERED_JOBS,
       nextPage() {
         const nextPage = this.currentPage + 1;
         const maxPage = Math.ceil(
           // this.FILTERED_JOBS_BY_ORGANIZATIONS.length / 10
-          this.FILTERED_JOBS_BY_JOB_TYPES.length / 10
+          // this.FILTERED_JOBS_BY_JOB_TYPES.length / 10
+          this.FILTERED_JOBS.length / 10
         );
         return nextPage <= maxPage ? nextPage : undefined;
       },
@@ -72,10 +75,11 @@ export default {
         //   firstJobIndex,
         //   lastJobIndex
         // );
-        return this.FILTERED_JOBS_BY_JOB_TYPES.slice(
-          firstJobIndex,
-          lastJobIndex
-        );
+        // return this.FILTERED_JOBS_BY_JOB_TYPES.slice(
+        //   firstJobIndex,
+        //   lastJobIndex
+        // );
+        return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
       },
     }),
   },
