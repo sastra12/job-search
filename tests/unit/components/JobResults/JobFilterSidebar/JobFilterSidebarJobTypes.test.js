@@ -11,8 +11,11 @@ describe("JobFilterSidebarJobTypes", () => {
     const pinia = createTestingPinia();
     const jobStore = useJobsStore();
     const userStore = useUserStore();
+    const $router = { push: vi.fn() };
+
     render(JobFilterSidebarJobTypes, {
       global: {
+        mocks: { $router },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -20,7 +23,7 @@ describe("JobFilterSidebarJobTypes", () => {
       },
     });
 
-    return { jobStore, userStore };
+    return { jobStore, userStore, $router };
   };
 
   it("renders unique list of job types from jobs", async () => {
@@ -48,34 +51,65 @@ describe("JobFilterSidebarJobTypes", () => {
     expect(JobTypes).toEqual(["Full-time", "Part-time"]);
   });
 
-  it("communicates that user has selected checkbox for job types", async () => {
-    const { jobStore, userStore } = renderJobFilterSidebarJobTypes();
-    // yang lama
-    // const pinia = createTestingPinia();
-    // const userStore = useUserStore();
-    // const jobStore = useJobsStore();
-    jobStore.UNIQUE_JOB_TYPES = new Set(["Full-time", "Part-time"]);
+  describe("when user clicks checkbox", () => {
+    it("communicates that user has selected checkbox for job types", async () => {
+      const { jobStore, userStore } = renderJobFilterSidebarJobTypes();
+      // yang lama
+      // const pinia = createTestingPinia();
+      // const userStore = useUserStore();
+      // const jobStore = useJobsStore();
+      jobStore.UNIQUE_JOB_TYPES = new Set(["Full-time", "Part-time"]);
 
-    // yang lama
-    // render(JobFilterSidebarOrganizations, {
-    //   global: {
-    //     plugins: [pinia],
-    //     stubs: {
-    //       FontAwesomeIcon: true,
-    //     },
-    //   },
-    // });
-    const button = screen.getByRole("button", { name: /job types/i });
-    await userEvent.click(button);
+      // yang lama
+      // render(JobFilterSidebarOrganizations, {
+      //   global: {
+      //     plugins: [pinia],
+      //     stubs: {
+      //       FontAwesomeIcon: true,
+      //     },
+      //   },
+      // });
+      const button = screen.getByRole("button", { name: /job types/i });
+      await userEvent.click(button);
 
-    const fullTimeCheckbox = screen.getByRole("checkbox", {
-      name: /full-time/i,
+      const fullTimeCheckbox = screen.getByRole("checkbox", {
+        name: /full-time/i,
+      });
+
+      await userEvent.click(fullTimeCheckbox);
+
+      expect(userStore.ADD_SELECTED_JOB_TYPES).toHaveBeenCalledWith([
+        "Full-time",
+      ]);
     });
 
-    await userEvent.click(fullTimeCheckbox);
+    it("navigates user to job result page to see fresh batch of filtered jobs", async () => {
+      const { jobStore, $router } = renderJobFilterSidebarJobTypes();
+      // yang lama
+      // const pinia = createTestingPinia();
+      // const userStore = useUserStore();
+      // const jobStore = useJobsStore();
+      jobStore.UNIQUE_JOB_TYPES = new Set(["Full-time"]);
 
-    expect(userStore.ADD_SELECTED_JOB_TYPES).toHaveBeenCalledWith([
-      "Full-time",
-    ]);
+      // yang lama
+      // render(JobFilterSidebarOrganizations, {
+      //   global: {
+      //     plugins: [pinia],
+      //     stubs: {
+      //       FontAwesomeIcon: true,
+      //     },
+      //   },
+      // });
+      const button = screen.getByRole("button", { name: /job types/i });
+      await userEvent.click(button);
+
+      const fullTimeCheckbox = screen.getByRole("checkbox", {
+        name: /full-time/i,
+      });
+
+      await userEvent.click(fullTimeCheckbox);
+
+      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+    });
   });
 });

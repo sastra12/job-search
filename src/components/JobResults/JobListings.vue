@@ -4,7 +4,11 @@
       <JobListing v-for="job in displayJobs" :key="job.id" :job="job" />
     </ol>
 
-    <div class="mx-auto mt-8">
+    <div v-if="displayJobs.length === 0">
+      <h1>Page Not Found</h1>
+    </div>
+
+    <div class="mx-auto mt-8" v-else>
       <div class="flex flex-row flex-nowrap">
         <p class="flex-grow text-sm">Page {{ currentPage }}</p>
 
@@ -34,8 +38,8 @@ import { mapActions, mapState } from "pinia";
 import {
   useJobsStore,
   FETCH_JOBS,
-  FILTERED_JOBS_BY_ORGANIZATIONS,
-  FILTERED_JOBS_BY_JOB_TYPES,
+  // FILTERED_JOBS_BY_ORGANIZATIONS,
+  // FILTERED_JOBS_BY_JOB_TYPES,
   FILTERED_JOBS,
 } from "@/stores/jobs";
 import JobListing from "@/components/JobResults/JobListing.vue";
