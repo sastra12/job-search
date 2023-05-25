@@ -8,6 +8,8 @@ export const UNIQUE_JOB_TYPES = "UNIQUE_JOB_TYPES";
 export const FILTERED_JOBS_BY_ORGANIZATIONS = "FILTERED_JOBS_BY_ORGANIZATIONS";
 export const FILTERED_JOBS_BY_JOB_TYPES = "FILTERED_JOBS_BY_JOB_TYPES";
 export const FILTERED_JOBS = "FILTERED_JOBS";
+export const INCLUDE_JOB_BY_ORGANIZATIONS = "INCLUDE_JOB_BY_ORGANIZATIONS";
+export const INCLUDE_JOB_BY_JOB_TYPE = "INCLUDE_JOB_BY_JOB_TYPE";
 
 export const useJobsStore = defineStore("jobs", {
   state: () => {
@@ -62,26 +64,58 @@ export const useJobsStore = defineStore("jobs", {
       });
     },
 
-    [FILTERED_JOBS](state) {
-      const userStore = useUserStore();
-      const noSelectedOrganizations =
-        userStore.selectOrganizations.length === 0;
-      const noSelectedJobTypes = userStore.selectedJobTypes.length === 0;
+    // Passing arguments to getters
+    [INCLUDE_JOB_BY_ORGANIZATIONS]: () => {
+      return function (job) {
+        const userStore = useUserStore();
+        if (userStore.selectOrganizations.length === 0) {
+          return true;
+        }
+        return userStore.selectOrganizations.includes(job.organization);
+      };
+    },
 
+    // Passing arguments to getters
+    [INCLUDE_JOB_BY_JOB_TYPE]: () => {
+      return function (job) {
+        const userStore = useUserStore();
+        if (userStore.selectedJobTypes.length === 0) {
+          return true;
+        }
+        return userStore.selectedJobTypes.includes(job.jobType);
+      };
+    },
+
+    [FILTERED_JOBS](state) {
+      // yang lama
+      // const userStore = useUserStore();
+      // const noSelectedOrganizations =
+      //   userStore.selectOrganizations.length === 0;
+      // const noSelectedJobTypes = userStore.selectedJobTypes.length === 0;
+
+      // return state.jobs
+      //   .filter(function (job) {
+      //     if (noSelectedOrganizations) {
+      //       return true;
+      //     }
+      //     // mengembalikan true
+      //     return userStore.selectOrganizations.includes(job.organization);
+      //   })
+      //   .filter(function (job) {
+      //     if (noSelectedJobTypes) {
+      //       return true;
+      //     }
+      //     // mengembalikan true
+      //     return userStore.selectedJobTypes.includes(job.jobType);
+      //   });
+      const includeJobByOrganizations = this.INCLUDE_JOB_BY_ORGANIZATIONS;
+      const includeJobByJobType = this.INCLUDE_JOB_BY_JOB_TYPE;
       return state.jobs
         .filter(function (job) {
-          if (noSelectedOrganizations) {
-            return true;
-          }
-          // mengembalikan true
-          return userStore.selectOrganizations.includes(job.organization);
+          return includeJobByOrganizations(job);
         })
         .filter(function (job) {
-          if (noSelectedJobTypes) {
-            return true;
-          }
-          // mengembalikan true
-          return userStore.selectedJobTypes.includes(job.jobType);
+          return includeJobByJobType(job);
         });
     },
   },
