@@ -50,6 +50,54 @@ describe("getter", () => {
     });
   });
 
+  describe("INCLUDE_JOB_BY_ORGANIZATIONS", () => {
+    describe("when the user has not selected any organizations", () => {
+      it("includes job", () => {
+        const userStore = useUserStore();
+        userStore.selectOrganizations = [];
+        const jobStore = useJobsStore();
+        const job = { organization: "Google" };
+
+        const result = jobStore.INCLUDE_JOB_BY_ORGANIZATIONS(job);
+        expect(result).toBe(true);
+      });
+    });
+
+    it("identifies if job is asociated with given organizations", () => {
+      const userStore = useUserStore();
+      userStore.selectOrganizations = ["Google", "Amazon"];
+      const jobStore = useJobsStore();
+      const job = { organization: "Google" };
+
+      const result = jobStore.INCLUDE_JOB_BY_ORGANIZATIONS(job);
+      expect(result).toBe(true);
+    });
+  });
+
+  describe("INCLUDE_JOB_BY_JOB_TYPE", () => {
+    describe("when the user has not selected any job type", () => {
+      it("includes job", () => {
+        const userStore = useUserStore();
+        userStore.selectedJobTypes = [];
+        const jobStore = useJobsStore();
+        const job = { jobType: "Full-time" };
+
+        const result = jobStore.INCLUDE_JOB_BY_JOB_TYPE(job);
+        expect(result).toBe(true);
+      });
+    });
+
+    it("identifies if job is asociated with given job type", () => {
+      const userStore = useUserStore();
+      userStore.selectedJobTypes = ["Part-time", "Full-time"];
+      const jobStore = useJobsStore();
+      const job = { jobType: "Full-time" };
+
+      const result = jobStore.INCLUDE_JOB_BY_JOB_TYPE(job);
+      expect(result).toBe(true);
+    });
+  });
+
   describe("UNIQUE_JOB_TYPES", () => {
     it("finds unique job types from list of jobs", () => {
       const store = useJobsStore();
