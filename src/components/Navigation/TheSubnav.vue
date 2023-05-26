@@ -23,9 +23,7 @@ import { computed } from "vue";
 const route = useRoute();
 
 const onJobResultsPage = computed(() => {
-  if (route.name === "JobResults") {
-    return true;
-  }
+  return route.name === "JobResults";
 });
 
 const jobStore = useJobsStore();

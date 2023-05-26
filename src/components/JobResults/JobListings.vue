@@ -4,11 +4,7 @@
       <JobListing v-for="job in displayJobs" :key="job.id" :job="job" />
     </ol>
 
-    <div v-if="displayJobs.length === 0">
-      <h1>Page Not Found</h1>
-    </div>
-
-    <div class="mx-auto mt-8" v-else>
+    <div class="mx-auto mt-8">
       <div class="flex flex-row flex-nowrap">
         <p class="flex-grow text-sm">Page {{ currentPage }}</p>
 
