@@ -5,17 +5,19 @@ import { createTestingPinia } from "@pinia/testing";
 import JobFilterSidebarJobTypes from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarJobTypes.vue";
 import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+import { vi } from "vitest";
+
+vi.mock("vue-router");
 
 describe("JobFilterSidebarJobTypes", () => {
   const renderJobFilterSidebarJobTypes = () => {
     const pinia = createTestingPinia();
     const jobStore = useJobsStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(JobFilterSidebarJobTypes, {
       global: {
-        mocks: { $router },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -23,7 +25,7 @@ describe("JobFilterSidebarJobTypes", () => {
       },
     });
 
-    return { jobStore, userStore, $router };
+    return { jobStore, userStore };
   };
 
   it("renders unique list of job types from jobs", async () => {
@@ -53,6 +55,7 @@ describe("JobFilterSidebarJobTypes", () => {
 
   describe("when user clicks checkbox", () => {
     it("communicates that user has selected checkbox for job types", async () => {
+      useRouter.mockReturnValue({ push: vi.fn() });
       const { jobStore, userStore } = renderJobFilterSidebarJobTypes();
       // yang lama
       // const pinia = createTestingPinia();
@@ -84,7 +87,9 @@ describe("JobFilterSidebarJobTypes", () => {
     });
 
     it("navigates user to job result page to see fresh batch of filtered jobs", async () => {
-      const { jobStore, $router } = renderJobFilterSidebarJobTypes();
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
+      const { jobStore } = renderJobFilterSidebarJobTypes();
       // yang lama
       // const pinia = createTestingPinia();
       // const userStore = useUserStore();
@@ -109,7 +114,7 @@ describe("JobFilterSidebarJobTypes", () => {
 
       await userEvent.click(fullTimeCheckbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+      expect(push).toHaveBeenCalledWith({ name: "JobResults" });
     });
   });
 });
