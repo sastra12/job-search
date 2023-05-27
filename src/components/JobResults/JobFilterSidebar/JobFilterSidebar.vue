@@ -12,25 +12,53 @@
 
       <collapsible-accordion header="Degree" />
 
-      <job-filter-sidebar-job-types />
+      <!-- <job-filter-sidebar-job-types />
 
-      <job-filter-sidebar-organizations />
+      <job-filter-sidebar-organizations /> -->
+
+      <job-filter-sidebar-checkbox-group
+        header="Job Types"
+        :uniqueValue="UNIQUE_JOB_TYPES"
+        :action="userStore.ADD_SELECTED_JOB_TYPES"
+      />
+
+      <job-filter-sidebar-checkbox-group
+        header="Organizations"
+        :uniqueValue="UNIQUE_ORGANIZATIONS"
+        :action="userStore.ADD_SELECTED_ORGANIZATIONS"
+      />
     </section>
   </div>
 </template>
 
-<script>
+<script setup>
 import ActionButton from "@/components/Shared/ActionButton.vue";
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
-import JobFilterSidebarOrganizations from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarOrganizations.vue";
-import JobFilterSidebarJobTypes from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarJobTypes.vue";
-export default {
-  name: "JobFiltersSidebar",
-  components: {
-    ActionButton,
-    CollapsibleAccordion,
-    JobFilterSidebarOrganizations,
-    JobFilterSidebarJobTypes,
-  },
-};
+// import JobFilterSidebarOrganizations from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarOrganizations.vue";
+// import JobFilterSidebarJobTypes from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarJobTypes.vue";
+import JobFilterSidebarCheckboxGroup from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarCheckboxGroup.vue";
+import { useJobsStore } from "@/stores/jobs";
+import { useUserStore } from "@/stores/user";
+import { computed } from "vue";
+
+const jobStore = useJobsStore();
+const userStore = useUserStore();
+
+const UNIQUE_JOB_TYPES = computed(() => {
+  return jobStore.UNIQUE_JOB_TYPES;
+});
+
+const UNIQUE_ORGANIZATIONS = computed(() => {
+  return jobStore.UNIQUE_ORGANIZATIONS;
+});
+
+// export default {
+//   name: "JobFiltersSidebar",
+//   components: {
+//     ActionButton,
+//     CollapsibleAccordion,
+//     JobFilterSidebarOrganizations,
+//     JobFilterSidebarJobTypes,
+//   },
+// };
 </script>
