@@ -5,17 +5,17 @@ import { createTestingPinia } from "@pinia/testing";
 import JobFilterSidebarOrganizations from "@/components/JobResults/JobFilterSidebar/JobFilterSidebarOrganizations.vue";
 import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+vi.mock("vue-router");
 
 describe("JobFilterSidebarOrganizations", () => {
   const renderJobFilterSidebarOrganizations = () => {
     const pinia = createTestingPinia();
     const jobStore = useJobsStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(JobFilterSidebarOrganizations, {
       global: {
-        mocks: { $router },
         plugins: [pinia],
         stubs: {
           FontAwesomeIcon: true,
@@ -23,7 +23,7 @@ describe("JobFilterSidebarOrganizations", () => {
       },
     });
 
-    return { jobStore, userStore, $router };
+    return { jobStore, userStore };
   };
 
   it("renders unique list of organizations from jobs", async () => {
@@ -53,6 +53,7 @@ describe("JobFilterSidebarOrganizations", () => {
 
   describe("when user click checkbox", () => {
     it("communicates that user has selected checkbox for organizations", async () => {
+      useRouter.mockReturnValue({ push: vi.fn() });
       const { jobStore, userStore } = renderJobFilterSidebarOrganizations();
       // yang lama
       // const pinia = createTestingPinia();
@@ -84,7 +85,9 @@ describe("JobFilterSidebarOrganizations", () => {
     });
 
     it("navigates user to job result page to see fresh batch of filtered jobs", async () => {
-      const { jobStore, $router } = renderJobFilterSidebarOrganizations();
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
+      const { jobStore } = renderJobFilterSidebarOrganizations();
       // yang lama
       // const pinia = createTestingPinia();
       // const userStore = useUserStore();
@@ -109,7 +112,7 @@ describe("JobFilterSidebarOrganizations", () => {
 
       await userEvent.click(googleCheckbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+      expect(push).toHaveBeenCalledWith({ name: "JobResults" });
     });
   });
 });
