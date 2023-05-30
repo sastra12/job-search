@@ -29,67 +29,101 @@
   </main>
 </template>
 
-<script>
-import { mapActions, mapState } from "pinia";
+<script setup>
+// import { mapActions, mapState } from "pinia";
 import {
   useJobsStore,
-  FETCH_JOBS,
+  // FETCH_JOBS,
   // FILTERED_JOBS_BY_ORGANIZATIONS,
   // FILTERED_JOBS_BY_JOB_TYPES,
-  FILTERED_JOBS,
+  // FILTERED_JOBS,
 } from "@/stores/jobs";
 import JobListing from "@/components/JobResults/JobListing.vue";
+import { computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 
-export default {
-  name: "JobListings",
-  components: { JobListing },
+const route = useRoute();
+const jobStore = useJobsStore();
 
-  computed: {
-    currentPage() {
-      return Number.parseInt(this.$route.query.page || "1");
-    },
-    previousPage() {
-      const previousPage = this.currentPage - 1;
-      const firstPage = 1;
-      return previousPage >= firstPage ? previousPage : undefined;
-    },
-    ...mapState(useJobsStore, {
-      // FILTERED_JOBS_BY_ORGANIZATIONS,
-      // FILTERED_JOBS_BY_JOB_TYPES,
-      FILTERED_JOBS,
-      nextPage() {
-        const nextPage = this.currentPage + 1;
-        const maxPage = Math.ceil(
-          // this.FILTERED_JOBS_BY_ORGANIZATIONS.length / 10
-          // this.FILTERED_JOBS_BY_JOB_TYPES.length / 10
-          this.FILTERED_JOBS.length / 10
-        );
-        return nextPage <= maxPage ? nextPage : undefined;
-      },
-      displayJobs() {
-        // ketika ada perubahan di current page maka akan otomatis menjalankan displayjobs
-        const pageNumber = this.currentPage;
-        const firstJobIndex = (pageNumber - 1) * 10;
-        const lastJobIndex = pageNumber * 10;
-        // return this.FILTERED_JOBS_BY_ORGANIZATIONS.slice(
-        //   firstJobIndex,
-        //   lastJobIndex
-        // );
-        // return this.FILTERED_JOBS_BY_JOB_TYPES.slice(
-        //   firstJobIndex,
-        //   lastJobIndex
-        // );
-        return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
-      },
-    }),
-  },
+onMounted(jobStore.FETCH_JOBS);
 
-  async mounted() {
-    this.FETCH_JOBS();
-  },
+const currentPage = computed(() => {
+  return Number.parseInt(route.query.page || "1");
+});
 
-  methods: {
-    ...mapActions(useJobsStore, [FETCH_JOBS]),
-  },
-};
+const previousPage = computed(() => {
+  const previousPage = currentPage.value - 1;
+  const firstPage = 1;
+  return previousPage >= firstPage ? previousPage : undefined;
+});
+
+const FILTERED_JOBS = computed(() => {
+  return jobStore.FILTERED_JOBS;
+});
+
+const nextPage = computed(() => {
+  const nextPage = currentPage.value + 1;
+  const maxPage = Math.ceil(FILTERED_JOBS.value.length / 10);
+  return nextPage <= maxPage ? nextPage : undefined;
+});
+
+const displayJobs = computed(() => {
+  const pageNumber = currentPage.value;
+  const firstJobIndex = (pageNumber - 1) * 10;
+  const lastJobIndex = pageNumber * 10;
+  return FILTERED_JOBS.value.slice(firstJobIndex, lastJobIndex);
+});
+
+// export default {
+//   name: "JobListings",
+//   components: { JobListing },
+
+//   computed: {
+//     currentPage() {
+//       return Number.parseInt(this.$route.query.page || "1");
+//     },
+//     previousPage() {
+//       const previousPage = this.currentPage - 1;
+//       const firstPage = 1;
+//       return previousPage >= firstPage ? previousPage : undefined;
+//     },
+//     ...mapState(useJobsStore, {
+//       // FILTERED_JOBS_BY_ORGANIZATIONS,
+//       // FILTERED_JOBS_BY_JOB_TYPES,
+//       FILTERED_JOBS,
+//       nextPage() {
+//         const nextPage = this.currentPage + 1;
+//         const maxPage = Math.ceil(
+//           // this.FILTERED_JOBS_BY_ORGANIZATIONS.length / 10
+//           // this.FILTERED_JOBS_BY_JOB_TYPES.length / 10
+//           this.FILTERED_JOBS.length / 10
+//         );
+//         return nextPage <= maxPage ? nextPage : undefined;
+//       },
+//       displayJobs() {
+//         // ketika ada perubahan di current page maka akan otomatis menjalankan displayjobs
+//         const pageNumber = this.currentPage;
+//         const firstJobIndex = (pageNumber - 1) * 10;
+//         const lastJobIndex = pageNumber * 10;
+//         // return this.FILTERED_JOBS_BY_ORGANIZATIONS.slice(
+//         //   firstJobIndex,
+//         //   lastJobIndex
+//         // );
+//         // return this.FILTERED_JOBS_BY_JOB_TYPES.slice(
+//         //   firstJobIndex,
+//         //   lastJobIndex
+//         // );
+//         return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex);
+//       },
+//     }),
+//   },
+
+//   async mounted() {
+//     this.FETCH_JOBS();
+//   },
+
+//   methods: {
+//     ...mapActions(useJobsStore, [FETCH_JOBS]),
+//   },
+// };
 </script>
