@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import getJobs from "@/api/getJobs";
 import { useUserStore } from "@/stores/user";
 
+import type { Job } from "@/api/types";
+
 export const FETCH_JOBS = "FETCH_JOBS";
 export const UNIQUE_ORGANIZATIONS = "UNIQUE_ORGANIZATIONS";
 export const UNIQUE_JOB_TYPES = "UNIQUE_JOB_TYPES";
@@ -10,9 +12,12 @@ export const UNIQUE_JOB_TYPES = "UNIQUE_JOB_TYPES";
 export const FILTERED_JOBS = "FILTERED_JOBS";
 export const INCLUDE_JOB_BY_ORGANIZATIONS = "INCLUDE_JOB_BY_ORGANIZATIONS";
 export const INCLUDE_JOB_BY_JOB_TYPE = "INCLUDE_JOB_BY_JOB_TYPE";
+export interface JobsState {
+  jobs: Job[];
+}
 
 export const useJobsStore = defineStore("jobs", {
-  state: () => {
+  state: (): JobsState => {
     return {
       jobs: [],
     };
@@ -29,7 +34,7 @@ export const useJobsStore = defineStore("jobs", {
   // computed
   getters: {
     [UNIQUE_ORGANIZATIONS](state) {
-      const uniqueOrganizations = new Set();
+      const uniqueOrganizations = new Set<string>();
       state.jobs.forEach(function (job) {
         uniqueOrganizations.add(job.organization);
       });
@@ -37,7 +42,7 @@ export const useJobsStore = defineStore("jobs", {
     },
 
     [UNIQUE_JOB_TYPES](state) {
-      const uniquejobTypes = new Set();
+      const uniquejobTypes = new Set<string>();
       state.jobs.forEach(function (job) {
         uniquejobTypes.add(job.jobType);
       });
@@ -66,7 +71,7 @@ export const useJobsStore = defineStore("jobs", {
 
     // Passing arguments to getters
     [INCLUDE_JOB_BY_ORGANIZATIONS]: () => {
-      return function (job) {
+      return function (job: Job) {
         const userStore = useUserStore();
         if (userStore.selectOrganizations.length === 0) {
           return true;
@@ -77,7 +82,7 @@ export const useJobsStore = defineStore("jobs", {
 
     // Passing arguments to getters
     [INCLUDE_JOB_BY_JOB_TYPE]: () => {
-      return function (job) {
+      return function (job: Job) {
         const userStore = useUserStore();
         if (userStore.selectedJobTypes.length === 0) {
           return true;
@@ -86,7 +91,7 @@ export const useJobsStore = defineStore("jobs", {
       };
     },
 
-    [FILTERED_JOBS](state) {
+    [FILTERED_JOBS](state): Job[] {
       // yang lama
       // const userStore = useUserStore();
       // const noSelectedOrganizations =
